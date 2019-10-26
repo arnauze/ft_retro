@@ -1,6 +1,10 @@
 # include "../header/header.hpp"
+# include "../header/Frame.hpp"
 
 int         main(void) {
-    std::cout << "Hello!" << std::endl;
+    Frame   *frame = new Frame();
+
+    frame->init();
+    frame->gameLoop();
     return (0);
 }

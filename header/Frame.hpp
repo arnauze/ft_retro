@@ -9,8 +9,8 @@ class                   Frame {
         ~Frame(void);
         Frame(Frame const & frame);
         Frame               &operator=(Frame const & frame);
-    private:
-        
+        void                init(void);
+        void                gameLoop(void);
 };
 
 #endif
