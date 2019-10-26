@@ -1,5 +1,5 @@
 OBJECTS = *.o
-SRC = src/ft_retro.cpp\
+SRC = src/*.cpp\
 
 FLAGS = -Wall -Wextra -Werror -lncurses
 NAME = ft_retro
