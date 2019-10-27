@@ -7,7 +7,6 @@ Frame::Frame(void) : _seconds(0), _score(0) {
     //      Score -> 0
     //      Enemies: NULL
     //      Player: NULL
-
     this->_enemies = NULL;
     this->_player = NULL;
     this->_missiles = NULL;
@@ -52,6 +51,41 @@ void            Frame::setSeconds(unsigned int seconds) {
     return ;
 }
 
+int             Frame::getMaxX(void) const {
+    return this->_max_x;
+}
+
+int             Frame::getMaxY(void) const {
+    return this->_max_y;
+}
+
+int             Frame::getMinX(void) const {
+    return this->_min_x;
+}
+
+int             Frame::getMinY(void) const {
+    return this->_min_y;
+}
+
+void            Frame::setMaxX(int x) {
+    this->_max_x = x;
+    return ;
+}
+
+void            Frame::setMaxY(int y) {
+    this->_max_y = y;
+    return ;
+}
+
+void            Frame::setMinX(int x) {
+    this->_min_x = x;
+}
+
+void            Frame::setMinY(int y) {
+    this->_min_y = y;
+    return ;
+}
+
 unsigned int    Frame::getScore(void) const {
     return this->_score;
 }
@@ -62,6 +96,10 @@ unsigned int    Frame::getSeconds(void) const {
 
 t_list          *Frame::getMissiles(void) const {
     return this->_missiles;
+}
+
+t_list          *Frame::getEnemies(void) const {
+    return this->_enemies;
 }
 
 void            Frame::init(void) const {
@@ -97,13 +135,16 @@ void            Frame::gameLoop(void) {
 
     bool        alive = true;
     int         tick = -1;          // Variable incrementing every while loop to give a rythm to the game
-
+    this->setMaxX(getmaxx(stdscr));
+    this->setMaxY(getmaxy(stdscr) - BORDER_Y);
+    this->setMinX(0);
+    this->setMinY(BORDER_Y);
     while (alive) {
 
         if ((++tick % 10) == 0)     //  If we don't receive input we will loop every 10ms, so
             this->_seconds += 1;    //  every 10 ticks I increase the timer of 1s 
 
-        this->refreshObjects();
+        this->refreshObjects(tick);     // Update the variables of the objects, and add the new ennemies and missiles
         this->printLayout();        //  I print the arena
         this->printObjects();       //  I print the objects
 
@@ -120,7 +161,7 @@ void            Frame::gameLoop(void) {
         else if (c == RIGHT)
             this->_player->moveRight();
         else if (c == SPACE)
-            this->addMissile(new Missile(this->_player->getX(), this->_player->getY() - 1));
+            this->addMissile(new Missile(this->_player->getX() + 6, this->_player->getY()));
 
         clear();
         refresh();                  // Refresh the screen with the new informations
@@ -147,7 +188,7 @@ void            Frame::printLayout(void) const {
     seconds << "Time: " << this->_seconds;
     score << "Score: " << this->_score;
     lives << "Lives: " << this->_player->getLives();
-    controllers << "( " << this->_player->getX() << " , " << this->_player->getY() << " )";
+    controllers << "( " << this->getMaxX() << " , " << this->getMaxY() << " )";
 
     // Writing the messages in the top and bottom bar
 
@@ -172,25 +213,51 @@ void            Frame::printLayout(void) const {
 }
 
 void            Frame::printObjects(void) const {
+
     mvaddstr(this->_player->getY(), this->_player->getX(), "Player");        // Outputing our player as a string
+
     t_list  *current;
+
     current = this->_enemies;
     while (current) {
-        mvaddstr(current->data->getY(), current->data->getX(), "Enemy");
+        mvaddstr(current->data->getY(), current->data->getX(), "Enemy");    //  Ouputting the ennemies
         current = current->next;
     }
+
     current = this->_missiles;
     while(current) {
-        mvaddstr(current->data->getY(), current->data->getX(), "O");
+        mvaddstr(current->data->getY(), current->data->getX(), "O");        //  Outputting the missiles
         current = current->next;
     }
+
 }
 
-void            Frame::refreshObjects(void) {
+void            Frame::refreshObjects(int tick) {
     t_list      *current;
+
     current = this->getMissiles();
     while (current) {
-        current->data->setY(current->data->getY() - 1);
+        current->data->setX(current->data->getX() + 2);
         current = current->next;
+    }
+
+    if ((tick % 15) == 0) {
+        this->spawnEnemies();
+    }
+    current = this->getEnemies();
+    while (current) {
+        current->data->setX(current->data->getX() - 1);
+        current = current->next;
+    }
+
+}
+
+void            Frame::spawnEnemies(void) {
+    srand(time(NULL));
+    int         amount = rand() % 5;
+    int         y = (rand() % this->getMaxY()) + 10;
+    int         i = -1;
+    while (++i < amount) {
+        this->addEnemy(new Enemy(this->getMaxX() - 6, y));
     }
 }

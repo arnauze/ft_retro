@@ -18,6 +18,7 @@ void                    delete_node(t_list **head, t_list *node);
 void                    add_node(t_list **head, Position *data);
 
 # define FPS            1 // (* 10) ms
+# define BORDER_Y       5
 
 # define ESC_KEY        27
 # define UP             119

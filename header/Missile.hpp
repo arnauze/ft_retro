@@ -11,6 +11,7 @@ class               Missile : public Position {
         ~Missile(void);
         Missile(Missile const & missile);
         Missile         &operator=(Missile const & missile);
+        
 };
 
 #endif
