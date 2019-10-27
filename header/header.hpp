@@ -5,11 +5,17 @@
 # include <sstream>
 # include <string>
 # include <curses.h>
+# include <time.h>
+# include "Position.hpp"
 
+class Position;
 typedef struct          s_list {
-    void                *data;
+    Position            *data;
     struct s_list       *next;
 }                       t_list;
+
+void                    delete_node(t_list *head, t_list *node);
+void                    add_node(t_list **head, Position *data);
 
 # define FPS            1 // (* 10) ms
 

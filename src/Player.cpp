@@ -12,8 +12,13 @@
 
 #include "../header/Player.hpp"
 
-Player::Player(void)
+Player::Player(void) : Position()
 {
+    return ;
+}
+
+Player::Player(int x, int y) : Position(x, y) {
+	this->lives = 5;
     return ;
 }
 
@@ -27,27 +32,11 @@ void	Player::drawShip(void)
 	return;
 }
 
-void	Player::moveUp(void) 
-{
-	return;
-}
-
-void	Player::moveDown(void) 
-{
-	return;
-}
-
-void	Player::moveRight(void) 
-{
-	return;
-}
-
-void	Player::moveLeft(void) 
-{
-	return;
-}
-
 void	Player::getDamage(void) 
 {
 	return;
+}
+
+int		Player::getLives(void) const {
+	return this->lives;
 }

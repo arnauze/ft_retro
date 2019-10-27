@@ -20,14 +20,17 @@ class                   Frame {
         unsigned int        getScore(void) const;
         void                setSeconds(unsigned int seconds);
         void                setScore(unsigned int score);
+        void                setPlayer(Player *player);
+        void                setEnemies(t_list *enemies);
+        void                addEnemy(Position *p);
 
     private:
         int                 _seconds;
         int                 _score;
-        Player              *player;
-        t_list              *enemies;
-        t_list              *missiles;
-        t_list              *obstacles;
+        Player              *_player;
+        t_list              *_enemies;
+        // t_list              *_missiles;
+        // t_list              *_obstacles;
 
 };
 
