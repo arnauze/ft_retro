@@ -111,6 +111,10 @@ void            Frame::init(void) {
     noecho();                       // Input is not being echo'ed back to the terminal
     keypad(stdscr, TRUE);           // To receive the extra keys (Arrows, etc)
     curs_set(0);                    // Cursor becomes invisible
+    start_color();                  // Set the color
+    init_pair(1,COLOR_RED, COLOR_BLACK); //1 for red
+    init_pair(2,COLOR_BLUE, COLOR_BLACK); //2 for Blue
+    init_pair(3,COLOR_YELLOW, COLOR_BLACK); //3 for Yellow
     halfdelay(FPS);                 // Input will wait 'FPS' ms and send a default message (system of tick)
     clear();                        // Clear terminal
     Player  *player = new Player(1, getmaxy(stdscr) / 2);
@@ -226,7 +230,13 @@ void            Frame::printObjects(void) const {
 
     current = this->_enemies;
     while (current) {
-        mvaddstr(current->data->getY(), current->data->getX(), "Enemy");    //  Ouputting the ennemies
+        //mvaddstr(current->data->getY(), current->data->getX(), "Enemy");    //  Ouputting the ennemies
+        attron(COLOR_PAIR(1));
+        mvaddstr(current->data->getY() - 1, current->data->getX() + 2, "/");
+        mvaddstr(current->data->getY(), current->data->getX(), "<");
+        mvaddstr(current->data->getY(), current->data->getX() +1, "=");
+        mvaddstr(current->data->getY() + 1, current->data->getX() + 2, "\\");
+        attroff(COLOR_PAIR(1));
         current = current->next;
     }
 
@@ -242,7 +252,7 @@ void            Frame::refreshObjects(int tick) {
     t_list      *current;
 
     current = this->getMissiles();
-    while (current) {
+    while (current) {        
         current->data->setX(current->data->getX() + 2);
         current = current->next;
     }
