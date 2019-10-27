@@ -2,6 +2,8 @@
 # define FRAME_HPP
 
 # include "header.hpp"
+# include "Player.hpp"
+# include "Enemy.hpp"
 
 class                   Frame {
     public:
@@ -12,10 +14,15 @@ class                   Frame {
         void                init(void) const;
         void                gameLoop(void);
         void                printLayout(void) const;
+
     private:
         int                 _seconds;
         int                 _score;
-        int                 _lives;
+        Player              *player;
+        t_list              *enemies;
+        t_list              *missiles;
+        t_list              *obstacles;
+
 };
 
 #endif

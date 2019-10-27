@@ -13,4 +13,6 @@ typedef struct          s_list {
 
 # define FPS            1 // (* 10) ms
 
+# define ESC_KEY        27
+
 #endif

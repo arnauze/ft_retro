@@ -15,20 +15,17 @@
 
 # include "header.hpp"
 
-class	Pleayer {
+class	Player {
     public:
         Player(void);
         ~Player(void);
         Player(Player const & frame);
-        Player	&operator=(Frame const & frame);
-    
-    	
+        Player	&operator=(Player const & frame);	
 
     private:
-        int	lives = 4;
-        // char	*ship = 
-        int	x_center = 0;
-        int y_center = 0;
+        int	lives;
+        int	x_center;
+        int y_center;
 };
 
 #endif
