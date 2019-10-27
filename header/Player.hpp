@@ -16,6 +16,7 @@
 # include "header.hpp"
 # include "Position.hpp"
 # include "Frame.hpp"
+# include "Missile.hpp"
 
 class Frame;
 class	Player : public Position {

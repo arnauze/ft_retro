@@ -308,7 +308,8 @@ void            Frame::refreshObjects(int tick) {
 
     // Now we handle the collision
 
-    current = this->getMissiles();                      // Collision between player missiles and enemies
+    // Collision between player missiles and enemies
+    current = this->getMissiles();
     while (current) {
         if (current->data->getVisible()) {
             secondary = this->getEnemies();
@@ -327,7 +328,21 @@ void            Frame::refreshObjects(int tick) {
         current = current->next;
     }
 
+    // Collision between player enemy missiles and player
     current = this->_emissiles;
+    while (current) {
+        if (current->data->getVisible()) {
+            if (this->_player->isTouched(current->data)) {
+                current->data->setVisible(false);
+                this->setLives(this->getLives() - 1);
+                break ;
+            }
+        }
+        current = current->next;
+    }
+
+    // Collision between player enemies and player
+    current = this->_enemies;
     while (current) {
         if (current->data->getVisible()) {
             if (this->_player->isTouched(current->data)) {

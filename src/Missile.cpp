@@ -5,6 +5,7 @@ Missile::Missile(void) : Position() {
 }
 
 Missile::Missile(int x, int y) : Position(x, y) {
+    this->type = "Missile";
     return ;
 }
 

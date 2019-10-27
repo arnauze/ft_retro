@@ -18,7 +18,8 @@ Enemy::Enemy(void) : Position()
     return ;
 }
 
-Enemy::Enemy(int x, int y) : Position(x, y) {	
+Enemy::Enemy(int x, int y) : Position(x, y) {
+    this->type = "Enemy";
     return ;
 }
 

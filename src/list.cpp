@@ -38,7 +38,6 @@ void            delete_node(t_list **head, t_list *node) {
     }
 }
 
-
 //move enemy left
 void            moveEnemy(t_list **head) {    
 	

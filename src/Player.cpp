@@ -20,6 +20,7 @@ Player::Player(void) : Position()
 }
 
 Player::Player(int x, int y) : Position(x, y) {
+	this->type = "Player";
 	this->lives = 5;
     return ;
 }
@@ -56,12 +57,35 @@ void	Player::looseLife(void) {
 	return ;
 }
 
-bool		Player::isTouched(Position *data) {
+bool		Player::isTouched(Position * data) {
 	int		dataX = data->getX();
 	int		dataY = data->getY();
-	if (((this->getX() == dataX) || (this->getX() + 1 == dataX) || (this->getX() + 2 == dataX)) && ((this->getY() == dataY) || (this->getY() + 1 == dataY) || (this->getY() - 1 == dataY)))
-		return true;
-	return false;
+	if (data->getType() == "Enemy") {
+		if (
+			(
+				((this->getX() == dataX) || (this->getX() + 1 == dataX) || (this->getX() + 2 == dataX))
+				||
+				((this->getX() == dataX + 1) || (this->getX() + 1 == dataX + 1) || (this->getX() + 2 == dataX + 1))
+				||
+				((this->getX() == dataX + 2) || (this->getX() + 1 == dataX + 2) || (this->getX() + 2 == dataX + 2))
+			)
+			&&
+			(
+				((this->getY() == dataY) || (this->getY() + 1 == dataY) || (this->getY() + 2 == dataY))
+				||
+				((this->getY() == dataY + 1) || (this->getY() + 1 == dataY + 1) || (this->getY() + 2 == dataY + 1))
+				||
+				((this->getY() == dataY + 2) || (this->getY() + 1 == dataY + 2) || (this->getY() + 2 == dataY + 2))
+			)
+		)
+			return true;
+		else
+			return false;
+	} else {
+		if (((this->getX() == dataX) || (this->getX() + 1 == dataX) || (this->getX() + 2 == dataX)) && ((this->getY() == dataY) || (this->getY() + 1 == dataY) || (this->getY() - 1 == dataY)))
+			return true;
+		return false;
+	}
 }
 
 // void	Player::shoot(Frame **frame) {

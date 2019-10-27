@@ -75,6 +75,10 @@ void	Position::moveLeft(void)
 	return;
 }
 
+std::string		Position::getType(void) const {
+	return this->type;
+}
+
 Position    *Position::clone(void) {
     return new Position(this->getX(), this->getY());
 }

@@ -22,10 +22,12 @@ class        Position {
     	void	moveRight(void);
     	void	moveLeft(void);        
         Position    *clone(void);
+        std::string getType(void) const;
 
     protected:
         int	x_center;
         int y_center;
+        std::string type;
         bool    visible;
         Position(void);
 };
