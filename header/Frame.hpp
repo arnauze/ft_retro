@@ -32,10 +32,12 @@ class                   Frame {
         void                setMaxY(int);
         void                setMinX(int);
         void                setMinY(int);
+        void                setLives(int);
         int                 getMaxX(void) const;
         int                 getMaxY(void) const;
         int                 getMinX(void) const;
         int                 getMinY(void) const;
+        int                 getLives(void) const;
 
         void                addEnemy(Position *p);
         void                addMissile(Position *p);
@@ -52,6 +54,7 @@ class                   Frame {
         t_list              *_enemies;
         t_list              *_emissiles;
         t_list              *_missiles;
+        int                 _lives;
         // t_list              *_obstacles;
         int                 _max_y;
         int                 _min_y;
