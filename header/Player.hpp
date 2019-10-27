@@ -14,24 +14,21 @@
 # define PLAYER_HPP
 
 # include "header.hpp"
+# include "Position.hpp"
 
-class	Player {
-    int	lives = 5;
-    int	x_center = 0;
-    int y_center = 0;
+class	Player : public Position {
+    int	lives;
 
     public:
         Player(void);
+        Player(int x, int y);
         ~Player(void);
-        Player(Player const & frame);
-        Player	&operator=(Frame const & frame);
+        Player(Player const & player);
+        Player	&operator=(Player const & player);
     
     	void	drawShip(void);
-    	void	moveUp(void);
-    	void	moveDown(void);
-    	void	moveRight(void);
-    	void	moveLeft(void);
     	void	getDamage(void);
+        int     getLives(void) const;
 };
 
 #endif

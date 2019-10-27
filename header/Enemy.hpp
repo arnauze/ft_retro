@@ -13,27 +13,18 @@
 #ifndef ENEMY_HPP
 # define ENEMY_HPP
 
-# include <iostream>
-# include <string>
+# include "header.hpp"
+# include "Position.hpp"
 
-class Enemy
-{
-public:
-    Enemy(int);    
-    Enemy(void);
-    ~Enemy(void);
-    Enemy( Enemy const & enemy );
-    Enemy &operator=(Enemy const & enemy);    
-    void setName(std::string str);
-    void announce(void);
-    void move(int x, int y);
-    int x;
-    int y;       
+class        Enemy : public Position {
 
-private:
-    std::string _type;
-    std::string _name;
-    int         _index;    
+    public:
+        Enemy(void);
+        Enemy(int x, int y);
+        ~Enemy( void );
+        Enemy( Enemy const & enemy );
+        Enemy &operator=(Enemy const & enemy);
+
 };
 
 #endif
