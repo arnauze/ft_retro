@@ -296,18 +296,33 @@ void            Frame::refreshObjects(int tick) {
 
     // Now we handle the collision
 
-    current = this->getMissiles();
+    current = this->getMissiles();                      // Collision between player missiles and enemies
     while (current) {
-        secondary = this->getEnemies();
-        while (secondary) {
-            if (secondary->data->getVisible()) {
-                if (((current->data->getX() == secondary->data->getX()) || (current->data->getX() - 1 == secondary->data->getX())) && (current->data->getY() == secondary->data->getY()))
-                {
-                    current->data->setVisible(false);
-                    secondary->data->setVisible(false);
+        if (current->data->getVisible()) {
+            secondary = this->getEnemies();
+            while (secondary) {
+                if (secondary->data->getVisible()) {
+                    if (((current->data->getX() == secondary->data->getX()) || (current->data->getX() - 1 == secondary->data->getX()) || (current->data->getX() - 2 == secondary->data->getX())) && ((current->data->getY() == secondary->data->getY()) || (current->data->getY() == secondary->data->getY() - 1) || (current->data->getY() == secondary->data->getY() + 1)))
+                    {
+                        current->data->setVisible(false);
+                        secondary->data->setVisible(false);
+                    }
                 }
+                secondary = secondary->next;
             }
-            secondary = secondary->next;
+        }
+        current = current->next;
+    }
+
+    current = this->_emissiles;
+    while (current) {
+        if (current->data->getVisible()) {
+            
+            if ((current->data->getX() == this->_player->getX()) && (current->data->getY() == this->_player->getY())) {
+                current->data->setVisible(false);
+                this->_player->setLives(this->_player->getLives() - 1);
+            }
+
         }
         current = current->next;
     }

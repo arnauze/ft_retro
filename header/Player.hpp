@@ -31,7 +31,7 @@ class	Player : public Position {
     	void	drawShip(void);
     	void	getDamage(void);
         int     getLives(void) const;
-        // void    shoot(Frame **frame);
+        void    setLives(int lives);
 };
 
 #endif
