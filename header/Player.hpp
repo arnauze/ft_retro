@@ -33,6 +33,7 @@ class	Player : public Position {
         int     getLives(void) const;
         void    setLives(int lives);
         void    looseLife(void);
+        bool    isTouched(Position *data);
 };
 
 #endif

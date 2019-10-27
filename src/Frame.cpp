@@ -171,14 +171,22 @@ void            Frame::gameLoop(void) {
         
         if (c == ESC_KEY)           // Handle the input
             break;
-        else if (c == UP)
-            this->_player->moveUp();
-        else if (c == LEFT)
-            this->_player->moveLeft();
-        else if (c == DOWN)
-            this->_player->moveDown();
-        else if (c == RIGHT)
-            this->_player->moveRight();
+        else if (c == UP) {
+            if (this->_player->getY() > BORDER_Y)
+                this->_player->moveUp();
+        }
+        else if (c == LEFT) {
+            if (this->_player->getX() > 1)
+                this->_player->moveLeft();
+        }
+        else if (c == DOWN) {
+            if (this->_player->getY() < this->_max_y - 1)
+                this->_player->moveDown();
+        }
+        else if (c == RIGHT) {
+            if (this->_player->getX() < this->_max_x - 10)
+                this->_player->moveRight();
+        }
         else if (c == SPACE)
             this->addMissile(new Missile(this->_player->getX() + 6, this->_player->getY()));
 
@@ -322,7 +330,7 @@ void            Frame::refreshObjects(int tick) {
     current = this->_emissiles;
     while (current) {
         if (current->data->getVisible()) {
-            if ((current->data->getX() == this->_player->getX()) && (current->data->getY() == this->_player->getY())) {
+            if (this->_player->isTouched(current->data)) {
                 current->data->setVisible(false);
                 this->setLives(this->getLives() - 1);
                 break ;
