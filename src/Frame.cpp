@@ -1,12 +1,6 @@
 # include "../header/Frame.hpp"
 
-Frame::Frame(void) : _seconds(0), _score(0) {
-
-    //  Constructor:
-    //      Seconds -> 0
-    //      Score -> 0
-    //      Enemies: NULL
-    //      Player: NULL
+Frame::Frame(void) : _seconds(0), _score(0), _lives(3) {
     this->_enemies = NULL;
     this->_player = NULL;
     this->_missiles = NULL;
@@ -92,6 +86,15 @@ void            Frame::setMinY(int y) {
     return ;
 }
 
+void            Frame::setLives(int lives) {
+    this->_lives = lives;
+    return ;
+}
+
+int             Frame::getLives(void) const {
+    return this->_lives;
+}
+
 unsigned int    Frame::getScore(void) const {
     return this->_score;
 }
@@ -150,13 +153,12 @@ void            Frame::gameLoop(void) {
     //      -> ELSE I receive input and treat it
     //              -> If the key pressed was the ESCAPE_KEY then we exit the game
 
-    bool        alive = true;
     int         tick = -1;          // Variable incrementing every while loop to give a rythm to the game
     this->setMaxX(getmaxx(stdscr));
     this->setMaxY(getmaxy(stdscr) - BORDER_Y);
     this->setMinX(0);
     this->setMinY(BORDER_Y);
-    while (alive) {
+    while (this->getLives() > 0) {
 
         if ((++tick % 10) == 0)
             this->_seconds += 1;
@@ -204,7 +206,7 @@ void            Frame::printLayout(void) const {
 
     seconds << "Time: " << this->_seconds;
     score << "Score: " << this->_score;
-    lives << "Lives: " << this->_player->getLives();
+    lives << "Lives: " << this->getLives();
     controllers << "( " << this->getMaxX() << " , " << this->getMaxY() << " )";
 
     // Writing the messages in the top and bottom bar
@@ -258,9 +260,11 @@ void            Frame::printObjects(void) const {
 
     current = this->_emissiles;
     while(current) {
-        attron(COLOR_PAIR(3));
-        mvaddstr(current->data->getY(), current->data->getX(), "-");        //  Outputting the missiles
-        attroff(COLOR_PAIR(3));
+        if (current->data->getVisible()) {
+            attron(COLOR_PAIR(3));
+            mvaddstr(current->data->getY(), current->data->getX(), "-");        //  Outputting the missiles
+            attroff(COLOR_PAIR(3));
+        }
         current = current->next;
     }
 
@@ -306,6 +310,7 @@ void            Frame::refreshObjects(int tick) {
                     {
                         current->data->setVisible(false);
                         secondary->data->setVisible(false);
+                        this->setScore(this->getScore() + 10);
                     }
                 }
                 secondary = secondary->next;
@@ -317,12 +322,11 @@ void            Frame::refreshObjects(int tick) {
     current = this->_emissiles;
     while (current) {
         if (current->data->getVisible()) {
-            
             if ((current->data->getX() == this->_player->getX()) && (current->data->getY() == this->_player->getY())) {
                 current->data->setVisible(false);
-                this->_player->setLives(this->_player->getLives() - 1);
+                this->setLives(this->getLives() - 1);
+                break ;
             }
-
         }
         current = current->next;
     }

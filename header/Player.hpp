@@ -32,6 +32,7 @@ class	Player : public Position {
     	void	getDamage(void);
         int     getLives(void) const;
         void    setLives(int lives);
+        void    looseLife(void);
 };
 
 #endif

@@ -48,6 +48,11 @@ void	Player::setLives(int lives) {
 	return ;
 }
 
+void	Player::looseLife(void) {
+	this->lives -= 1;
+	return ;
+}
+
 // void	Player::shoot(Frame **frame) {
 // 	t_list		*missiles = (*frame)->getMissiles();
 // 	add_node(&missiles, new Missile(this->getX(), this->getY() - 1));
