@@ -2,6 +2,7 @@
 # define HEADER_HPP
 
 # include <iostream>
+# include <sstream>
 # include <string>
 # include <curses.h>
 
@@ -10,6 +11,6 @@ typedef struct          s_list {
     struct s_list       *next;
 }                       t_list;
 
-# define FPS            7 // (* 10) ms
+# define FPS            1 // (* 10) ms
 
 #endif
