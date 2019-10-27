@@ -15,6 +15,8 @@ class        Position {
         void    setX(int x);
         int     getY(void) const;
         void    setY(int y);
+        void    setVisible(bool);
+        bool    getVisible(void) const;
         void	moveUp(void);
     	void	moveDown(void);
     	void	moveRight(void);
@@ -24,6 +26,7 @@ class        Position {
     protected:
         int	x_center;
         int y_center;
+        bool    visible;
         Position(void);
 };
 

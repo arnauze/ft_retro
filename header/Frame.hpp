@@ -27,6 +27,7 @@ class                   Frame {
         void                setScore(unsigned int score);
         void                setPlayer(Player *player);
         void                setEnemies(t_list *enemies);
+        void                setMissiles(t_list *missiles);
         void                setMaxX(int);
         void                setMaxY(int);
         void                setMinX(int);
@@ -43,7 +44,6 @@ class                   Frame {
 
         void                addEmissile(Position *p);
         void                spawnEmissiles(void);
-
 
     private:
         int                 _seconds;

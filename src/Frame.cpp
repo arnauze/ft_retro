@@ -37,6 +37,11 @@ void            Frame::setEnemies(t_list *enemies) {
     return ;
 }
 
+void            Frame::setMissiles(t_list *missiles) {
+    this->_missiles = missiles;
+    return ;
+}
+
 void            Frame::setPlayer(Player *player) {
     this->_player = player;
     return ;
@@ -153,14 +158,8 @@ void            Frame::gameLoop(void) {
     this->setMinY(BORDER_Y);
     while (alive) {
 
-        if ((++tick % 10) == 0)     //  If we don't receive input we will loop every 10ms, so
-            {
-                this->_seconds += 1;    //  every 10 ticks I increase the timer of 1s 
-                moveEnemy(&_enemies);   //  every 10 ticks, enemy moves left. from list.cpp                                
-            }
-        moveEmissiles(&_emissiles);
-        
-           //  every 10 ticks, enemy moves left. from list.cpp
+        if ((++tick % 10) == 0)
+            this->_seconds += 1;
 
         this->refreshObjects(tick);     // Update the variables of the objects, and add the new ennemies and missiles
         this->printLayout();        //  I print the arena
@@ -239,18 +238,21 @@ void            Frame::printObjects(void) const {
     current = this->_enemies;
     while (current) {
         //mvaddstr(current->data->getY(), current->data->getX(), "Enemy");    //  Ouputting the ennemies
-        attron(COLOR_PAIR(1));
-        mvaddstr(current->data->getY() - 1, current->data->getX() + 2, "/");
-        mvaddstr(current->data->getY(), current->data->getX(), "<");
-        mvaddstr(current->data->getY(), current->data->getX() +1, "=");
-        mvaddstr(current->data->getY() + 1, current->data->getX() + 2, "\\");
-        attroff(COLOR_PAIR(1));
+        if (current->data->getVisible()) {
+            attron(COLOR_PAIR(1));
+            mvaddstr(current->data->getY() - 1, current->data->getX() + 2, "/");
+            mvaddstr(current->data->getY(), current->data->getX(), "<");
+            mvaddstr(current->data->getY(), current->data->getX() +1, "=");
+            mvaddstr(current->data->getY() + 1, current->data->getX() + 2, "\\");
+            attroff(COLOR_PAIR(1));
+        }
         current = current->next;
     }
 
     current = this->_missiles;
     while(current) {
-        mvaddstr(current->data->getY(), current->data->getX(), "O");        //  Outputting the missiles
+        if (current->data->getVisible())
+            mvaddstr(current->data->getY(), current->data->getX(), "O");        //  Outputting the missiles
         current = current->next;
     }
 
@@ -266,12 +268,9 @@ void            Frame::printObjects(void) const {
 
 void            Frame::refreshObjects(int tick) {
     t_list      *current;
+    t_list      *secondary;
 
-    current = this->getMissiles();
-    while (current) {        
-        current->data->setX(current->data->getX() + 2);
-        current = current->next;
-    }
+    // First we move the objects
 
     if ((tick % 15) == 0) {
         this->spawnEnemies();        
@@ -279,10 +278,37 @@ void            Frame::refreshObjects(int tick) {
     if ((tick % 30) == 0) {
         this->spawnEmissiles();
     }
-    
+    if ((tick % 10) == 0) {
+        moveEnemy(&_enemies);
+    }
+
+    moveEmissiles(&_emissiles);
+    current = this->getMissiles();
+    while (current) {
+        current->data->setX(current->data->getX() + 2);
+        current = current->next;
+    }
     current = this->getEnemies();
     while (current) {
         current->data->setX(current->data->getX() - 1);
+        current = current->next;
+    }
+
+    // Now we handle the collision
+
+    current = this->getMissiles();
+    while (current) {
+        secondary = this->getEnemies();
+        while (secondary) {
+            if (secondary->data->getVisible()) {
+                if (((current->data->getX() == secondary->data->getX()) || (current->data->getX() - 1 == secondary->data->getX())) && (current->data->getY() == secondary->data->getY()))
+                {
+                    current->data->setVisible(false);
+                    secondary->data->setVisible(false);
+                }
+            }
+            secondary = secondary->next;
+        }
         current = current->next;
     }
 
@@ -304,9 +330,11 @@ void            Frame::spawnEmissiles(void) {
     current = this->_enemies;
     while(current)
     {
-        x = current->data->getX() - 1;
-        y = current->data->getY();
-        this->addEmissile(new Missile(x, y));
+        if (current->data->getVisible()) {
+            x = current->data->getX() - 1;
+            y = current->data->getY();
+            this->addEmissile(new Missile(x, y));
+        }
         current = current->next;
     }
 }

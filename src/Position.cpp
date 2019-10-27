@@ -5,6 +5,7 @@ Position::Position(void) {
 }
 
 Position::Position(int x, int y) : x_center(x), y_center(y) {
+	this->visible = true;
     return ;
 }
 
@@ -39,6 +40,15 @@ void	Position::setX(int x) {
 void	Position::setY(int y) {
 	this->y_center = y;
 	return ;
+}
+
+void	Position::setVisible(bool v) {
+	this->visible = v;
+	return ;
+}
+
+bool	Position::getVisible(void) const {
+	return this->visible;
 }
 
 void	Position::moveUp(void) 
