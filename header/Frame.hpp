@@ -38,14 +38,19 @@ class                   Frame {
 
         void                addEnemy(Position *p);
         void                addMissile(Position *p);
-        void                refreshObjects(int tick);
+        void                refreshObjects(int tick);                
         void                spawnEnemies(void);
+
+        void                addEmissile(Position *p);
+        void                spawnEmissiles(void);
+
 
     private:
         int                 _seconds;
         int                 _score;
         Player              *_player;
         t_list              *_enemies;
+        t_list              *_emissiles;
         t_list              *_missiles;
         // t_list              *_obstacles;
         int                 _max_y;

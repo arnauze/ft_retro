@@ -10,6 +10,7 @@ Frame::Frame(void) : _seconds(0), _score(0) {
     this->_enemies = NULL;
     this->_player = NULL;
     this->_missiles = NULL;
+    this->_emissiles = NULL;
     return ;
 }
 
@@ -129,6 +130,10 @@ void            Frame::addMissile(Position *p) {
     add_node(&this->_missiles, p);
 }
 
+void            Frame::addEmissile(Position *p) {
+    add_node(&this->_emissiles, p);
+}
+
 
 void            Frame::gameLoop(void) {
 
@@ -151,8 +156,11 @@ void            Frame::gameLoop(void) {
         if ((++tick % 10) == 0)     //  If we don't receive input we will loop every 10ms, so
             {
                 this->_seconds += 1;    //  every 10 ticks I increase the timer of 1s 
-                moveEnemy(&_enemies);   //  every 10 ticks, enemy moves left. from list.cpp
+                moveEnemy(&_enemies);   //  every 10 ticks, enemy moves left. from list.cpp                                
             }
+        moveEmissiles(&_emissiles);
+        
+           //  every 10 ticks, enemy moves left. from list.cpp
 
         this->refreshObjects(tick);     // Update the variables of the objects, and add the new ennemies and missiles
         this->printLayout();        //  I print the arena
@@ -246,6 +254,14 @@ void            Frame::printObjects(void) const {
         current = current->next;
     }
 
+    current = this->_emissiles;
+    while(current) {
+        attron(COLOR_PAIR(3));
+        mvaddstr(current->data->getY(), current->data->getX(), "-");        //  Outputting the missiles
+        attroff(COLOR_PAIR(3));
+        current = current->next;
+    }
+
 }
 
 void            Frame::refreshObjects(int tick) {
@@ -258,8 +274,12 @@ void            Frame::refreshObjects(int tick) {
     }
 
     if ((tick % 15) == 0) {
-        this->spawnEnemies();
+        this->spawnEnemies();        
     }
+    if ((tick % 30) == 0) {
+        this->spawnEmissiles();
+    }
+    
     current = this->getEnemies();
     while (current) {
         current->data->setX(current->data->getX() - 1);
@@ -275,5 +295,18 @@ void            Frame::spawnEnemies(void) {
     int         i = -1;
     while (++i < amount) {
         this->addEnemy(new Enemy(this->getMaxX() - 6, y));
+    }
+}
+
+void            Frame::spawnEmissiles(void) {    
+    int x, y;
+    t_list  *current;
+    current = this->_enemies;
+    while(current)
+    {
+        x = current->data->getX() - 1;
+        y = current->data->getY();
+        this->addEmissile(new Missile(x, y));
+        current = current->next;
     }
 }

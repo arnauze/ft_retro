@@ -51,3 +51,15 @@ void            moveEnemy(t_list **head) {
 		tmp = tmp->next;
 	}
 }
+
+void moveEmissiles(t_list **head) {    
+	
+    t_list      *tmp;
+
+	tmp = *head;
+	while (tmp)
+	{
+		tmp->data->moveLeft();
+		tmp = tmp->next;
+	}
+}

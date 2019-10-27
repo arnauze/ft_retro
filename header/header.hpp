@@ -17,6 +17,7 @@ typedef struct          s_list {
 void                    delete_node(t_list **head, t_list *node);
 void                    add_node(t_list **head, Position *data);
 void                    moveEnemy(t_list **head);
+void                    moveEmissiles(t_list **head);
 
 # define FPS            1 // (* 10) ms
 # define BORDER_Y       5
