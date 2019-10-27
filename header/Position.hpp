@@ -12,7 +12,9 @@ class        Position {
         Position &operator=(Position const & position);
 
         int     getX(void) const;
+        void    setX(int x);
         int     getY(void) const;
+        void    setY(int y);
         void	moveUp(void);
     	void	moveDown(void);
     	void	moveRight(void);

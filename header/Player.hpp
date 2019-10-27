@@ -15,7 +15,9 @@
 
 # include "header.hpp"
 # include "Position.hpp"
+# include "Frame.hpp"
 
+class Frame;
 class	Player : public Position {
     int	lives;
 
@@ -29,6 +31,7 @@ class	Player : public Position {
     	void	drawShip(void);
     	void	getDamage(void);
         int     getLives(void) const;
+        // void    shoot(Frame **frame);
 };
 
 #endif

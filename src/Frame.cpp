@@ -10,6 +10,7 @@ Frame::Frame(void) : _seconds(0), _score(0) {
 
     this->_enemies = NULL;
     this->_player = NULL;
+    this->_missiles = NULL;
     return ;
 }
 
@@ -59,6 +60,10 @@ unsigned int    Frame::getSeconds(void) const {
     return this->_seconds;
 }
 
+t_list          *Frame::getMissiles(void) const {
+    return this->_missiles;
+}
+
 void            Frame::init(void) const {
 
     // Function called to initialize the window in ncurses
@@ -74,6 +79,10 @@ void            Frame::init(void) const {
 
 void            Frame::addEnemy(Position *p) {
     add_node(&this->_enemies, p);
+}
+
+void            Frame::addMissile(Position *p) {
+    add_node(&this->_missiles, p);
 }
 
 void            Frame::gameLoop(void) {
@@ -94,20 +103,24 @@ void            Frame::gameLoop(void) {
         if ((++tick % 10) == 0)     //  If we don't receive input we will loop every 10ms, so
             this->_seconds += 1;    //  every 10 ticks I increase the timer of 1s 
 
+        this->refreshObjects();
         this->printLayout();        //  I print the arena
+        this->printObjects();       //  I print the objects
 
         char c = getch();           //  Wait 10ms for an input
         
         if (c == ESC_KEY)           // Handle the input
             break;
-        else if (c == 'w')
+        else if (c == UP)
             this->_player->moveUp();
-        else if (c == 'a')
+        else if (c == LEFT)
             this->_player->moveLeft();
-        else if (c == 's')
+        else if (c == DOWN)
             this->_player->moveDown();
-        else if (c == 'd')
+        else if (c == RIGHT)
             this->_player->moveRight();
+        else if (c == SPACE)
+            this->addMissile(new Missile(this->_player->getX(), this->_player->getY() - 1));
 
         clear();
         refresh();                  // Refresh the screen with the new informations
@@ -143,15 +156,6 @@ void            Frame::printLayout(void) const {
     mvaddstr(y_max - 2, 8, lives.str().c_str());
     mvaddstr(y_max - 2, x_max - 19, controllers.str().c_str());
 
-    mvaddstr(this->_player->getY(), this->_player->getX(), "Player");        // Outputing our player as a string
-
-    t_list  *current;
-    current = this->_enemies;
-    while (current) {
-        mvaddstr(current->data->getY(), current->data->getX(), "Enemy");
-        current = current->next;
-    }
-
     // Drawing the top bar and bottom bar
 
     while (++i < 3)
@@ -165,4 +169,28 @@ void            Frame::printLayout(void) const {
     i = -1;
     while (++i < x_max)
         mvaddch(y_max - 4, i, '-');
+}
+
+void            Frame::printObjects(void) const {
+    mvaddstr(this->_player->getY(), this->_player->getX(), "Player");        // Outputing our player as a string
+    t_list  *current;
+    current = this->_enemies;
+    while (current) {
+        mvaddstr(current->data->getY(), current->data->getX(), "Enemy");
+        current = current->next;
+    }
+    current = this->_missiles;
+    while(current) {
+        mvaddstr(current->data->getY(), current->data->getX(), "O");
+        current = current->next;
+    }
+}
+
+void            Frame::refreshObjects(void) {
+    t_list      *current;
+    current = this->getMissiles();
+    while (current) {
+        current->data->setY(current->data->getY() - 1);
+        current = current->next;
+    }
 }

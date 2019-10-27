@@ -31,6 +31,16 @@ int		Position::getY(void) const {
 	return this->y_center;
 }
 
+void	Position::setX(int x) {
+	this->x_center = x;
+	return ;
+}
+
+void	Position::setY(int y) {
+	this->y_center = y;
+	return ;
+}
+
 void	Position::moveUp(void) 
 {
 	this->y_center -= 1;

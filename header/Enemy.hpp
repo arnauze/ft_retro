@@ -15,6 +15,9 @@
 
 # include "header.hpp"
 # include "Position.hpp"
+# include "Frame.hpp"
+
+class Frame;
 
 class	Enemy : public Position {    
 
@@ -29,8 +32,7 @@ class	Enemy : public Position {
         int getW(void);
         int getH(void);
         std::string getType(void);
-
-        void	launchMissile(void);    	
+        void    shoot(Frame **frame);
     
     protected:
         std::string _type;

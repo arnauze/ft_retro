@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/Player.hpp"
+# include "../header/Player.hpp"
+# include "../header/Missile.hpp"
+# include "../header/Frame.hpp"
 
 Player::Player(void) : Position()
 {
@@ -40,3 +42,9 @@ void	Player::getDamage(void)
 int		Player::getLives(void) const {
 	return this->lives;
 }
+
+// void	Player::shoot(Frame **frame) {
+// 	t_list		*missiles = (*frame)->getMissiles();
+// 	add_node(&missiles, new Missile(this->getX(), this->getY() - 1));
+// 	return ;
+// }

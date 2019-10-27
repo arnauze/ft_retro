@@ -51,9 +51,7 @@ int Enemy::getW() {return _w;}
 int Enemy::getH() {return _h;}
 std::string Enemy::getType() {return _type;}
 
-
-
-void	Enemy::launchMissile(void) 
-{
+void        Enemy::shoot(Frame **frame) {
+    (void)frame;
 	return;
 }

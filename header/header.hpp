@@ -20,5 +20,10 @@ void                    add_node(t_list **head, Position *data);
 # define FPS            1 // (* 10) ms
 
 # define ESC_KEY        27
+# define UP             119
+# define LEFT           97
+# define DOWN           115
+# define RIGHT          100
+# define SPACE          32
 
 #endif
