@@ -30,7 +30,7 @@ Player::~Player(void)
 }
 
 void	Player::drawShip(void)
-{  
+{
 	mvaddch(Position::getY() - 1, Position::getX() + 2, '\\');
 	mvaddstr(Position::getY(), Position::getX(), "#|==>");
 	mvaddch(Position::getY() + 1, Position::getX() + 2, '/');
@@ -39,6 +39,7 @@ void	Player::drawShip(void)
 
 void	Player::getDamage(void) 
 {
+	
 	return;
 }
 

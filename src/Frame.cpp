@@ -167,18 +167,34 @@ void            Frame::gameLoop(void) {
 
         char c = getch();           //  Wait 10ms for an input
         
-        if (c == ESC_KEY)           // Handle the input
-            break;
-        else if (c == UP)
-            this->_player->moveUp();
-        else if (c == LEFT)
-            this->_player->moveLeft();
-        else if (c == DOWN)
-            this->_player->moveDown();
-        else if (c == RIGHT)
-            this->_player->moveRight();
-        else if (c == SPACE)
-            this->addMissile(new Missile(this->_player->getX() + 6, this->_player->getY()));
+        switch (c) {
+            case ESC_KEY:
+                break;
+            case SPACE:
+                this->addMissile(new Missile(this->_player->getX() + 3, this->_player->getY()));
+            case UP:
+                this->_player->moveUp();
+            case DOWN:
+                this->_player->moveDown();
+            case RIGHT:
+                this->_player->moveRight();
+            case LEFT:
+                this->_player->moveLeft();
+     }
+
+
+        // if (c == ESC_KEY)           // Handle the input
+        //     break;
+        // else if (c == UP)
+        //     this->_player->moveUp();
+        // else if (c == LEFT)
+        //     this->_player->moveLeft();
+        // else if (c == DOWN)
+        //     this->_player->moveDown();
+        // else if (c == RIGHT)
+        //     this->_player->moveRight();
+        // else if (c == SPACE)
+        //     this->addMissile(new Missile(this->_player->getX() + 6, this->_player->getY()));
 
         clear();
         refresh();                  // Refresh the screen with the new informations
@@ -259,7 +275,7 @@ void            Frame::printObjects(void) const {
     current = this->_emissiles;
     while(current) {
         attron(COLOR_PAIR(3));
-        mvaddstr(current->data->getY(), current->data->getX(), "-");        //  Outputting the missiles
+        mvaddstr(current->data->getY(), current->data->getX(), "-");        //  Outputting the enemy missiles
         attroff(COLOR_PAIR(3));
         current = current->next;
     }
