@@ -85,6 +85,7 @@ void            Frame::addMissile(Position *p) {
     add_node(&this->_missiles, p);
 }
 
+
 void            Frame::gameLoop(void) {
 
     // Function handling the main game loop
@@ -101,7 +102,10 @@ void            Frame::gameLoop(void) {
     while (alive) {
 
         if ((++tick % 10) == 0)     //  If we don't receive input we will loop every 10ms, so
-            this->_seconds += 1;    //  every 10 ticks I increase the timer of 1s 
+            {
+                this->_seconds += 1;    //  every 10 ticks I increase the timer of 1s 
+                moveEnemy(&_enemies);   //  every 10 ticks, enemy moves left. from list.cpp
+            }
 
         this->refreshObjects();
         this->printLayout();        //  I print the arena
