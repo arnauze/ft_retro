@@ -37,7 +37,10 @@ void	Position::setX(int x) {
 }
 
 void	Position::setY(int y) {
-	this->y_center = y;
+	if (y < 20)
+		delete this;
+	else 
+		this->y_center = y;
 	return ;
 }
 

@@ -17,13 +17,13 @@ void            add_node(t_list **head, Position *data) {
     }
 }
 
-void            delete_node(t_list *head, t_list *node) {
+void            delete_node(t_list **head, t_list *node) {
     t_list      *current;
     t_list      *tmp;
 
-    current = head;
+    current = *head;
     if (current == node) {
-        head = current->next;
+        *head = current->next;
         delete current;
         current = NULL;
     } else {

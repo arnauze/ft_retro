@@ -14,7 +14,7 @@ typedef struct          s_list {
     struct s_list       *next;
 }                       t_list;
 
-void                    delete_node(t_list *head, t_list *node);
+void                    delete_node(t_list **head, t_list *node);
 void                    add_node(t_list **head, Position *data);
 
 # define FPS            1 // (* 10) ms
