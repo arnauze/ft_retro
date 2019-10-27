@@ -10,4 +10,44 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../header/Player.hpp"
 
+Player::Player(void)
+{
+    return ;
+}
+
+Player::~Player(void)
+{
+    return ;
+}
+
+void	Player::drawShip(void) 
+{
+	return;
+}
+
+void	Player::moveUp(void) 
+{
+	return;
+}
+
+void	Player::moveDown(void) 
+{
+	return;
+}
+
+void	Player::moveRight(void) 
+{
+	return;
+}
+
+void	Player::moveLeft(void) 
+{
+	return;
+}
+
+void	Player::getDamage(void) 
+{
+	return;
+}

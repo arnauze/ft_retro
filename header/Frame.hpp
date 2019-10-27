@@ -11,9 +11,15 @@ class                   Frame {
         ~Frame(void);
         Frame(Frame const & frame);
         Frame               &operator=(Frame const & frame);
+
         void                init(void) const;
         void                gameLoop(void);
         void                printLayout(void) const;
+
+        unsigned int        getSeconds(void) const;
+        unsigned int        getScore(void) const;
+        void                setSeconds(unsigned int seconds);
+        void                setScore(unsigned int score);
 
     private:
         int                 _seconds;
