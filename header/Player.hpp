@@ -16,19 +16,22 @@
 # include "header.hpp"
 
 class	Pleayer {
+    int	lives = 5;
+    int	x_center = 0;
+    int y_center = 0;
+
     public:
         Player(void);
         ~Player(void);
-        Player(Player const & frame);
-        Player	&operator=(Frame const & frame);
+        // Player(Player const & frame);
+        // Player	&operator=(Frame const & frame);
     
-    	
-
-    private:
-        int	lives = 4;
-        // char	*ship = 
-        int	x_center = 0;
-        int y_center = 0;
+    	void	drawShip(void);
+    	void	moveUp(void);
+    	void	moveDown(void);
+    	void	moveRight(void);
+    	void	moveLeft(void);
+    	void	getDamage(void);
 };
 
 #endif
