@@ -14,7 +14,7 @@ class                   Frame {
         Frame(Frame const & frame);
         Frame               &operator=(Frame const & frame);
 
-        void                init(void) const;
+        void                init(void);
         void                gameLoop(void);
         void                printLayout(void) const;
         void                printObjects(void) const;

@@ -102,7 +102,7 @@ t_list          *Frame::getEnemies(void) const {
     return this->_enemies;
 }
 
-void            Frame::init(void) const {
+void            Frame::init(void) {
 
     // Function called to initialize the window in ncurses
 
@@ -113,6 +113,8 @@ void            Frame::init(void) const {
     curs_set(0);                    // Cursor becomes invisible
     halfdelay(FPS);                 // Input will wait 'FPS' ms and send a default message (system of tick)
     clear();                        // Clear terminal
+    Player  *player = new Player(1, getmaxy(stdscr) / 2);
+    this->setPlayer(player);
 }
 
 void            Frame::addEnemy(Position *p) {
