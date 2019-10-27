@@ -6,7 +6,7 @@
 /*   By: chjeong <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 19:56:36 by chjeong           #+#    #+#             */
-/*   Updated: 2019/10/26 20:53:40 by chjeong          ###   ########.fr       */
+/*   Updated: 2019/10/26 21:53:54 by chjeong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,26 @@
 # include "header.hpp"
 # include "Position.hpp"
 
-class        Enemy : public Position {
+class	Enemy : public Position {    
 
     public:
         Enemy(void);
         Enemy(int x, int y);
-        ~Enemy( void );
-        Enemy( Enemy const & enemy );
-        Enemy &operator=(Enemy const & enemy);
+        Enemy(int x, int y, int w, int h, std::string type);
+        ~Enemy(void);
+        Enemy(Enemy const & Enemy);
+        Enemy &operator=(Enemy & rhs);
 
+        int getW(void);
+        int getH(void);
+        std::string getType(void);
+
+        void	launchMissile(void);    	
+    
+    protected:
+        std::string _type;
+        int _h;
+        int _w;
 };
 
 #endif
-
-
