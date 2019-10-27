@@ -291,7 +291,7 @@ void            Frame::refreshObjects(int tick) {
 void            Frame::spawnEnemies(void) {
     srand(time(NULL));
     int         amount = rand() % 5;
-    int         y = (rand() % this->getMaxY()) + 10;
+    int         y = (rand() % (this->getMaxY() - 10)) + 10;
     int         i = -1;
     while (++i < amount) {
         this->addEnemy(new Enemy(this->getMaxX() - 6, y));
