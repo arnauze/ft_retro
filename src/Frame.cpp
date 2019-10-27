@@ -231,7 +231,7 @@ void            Frame::printLayout(void) const {
 
 void            Frame::printObjects(void) const {
 
-    mvaddstr(this->_player->getY(), this->_player->getX(), "Player");        // Outputing our player as a string
+    this->_player->drawShip();
 
     t_list  *current;
 
