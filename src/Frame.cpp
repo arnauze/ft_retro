@@ -72,9 +72,9 @@ void            Frame::printLayout(void) const {
     std::ostringstream   score;
     std::ostringstream   lives;
 
-    seconds << this->_seconds;
-    score << this->_score;
-    lives << this->_lives;
+    seconds << "Time: " << this->_seconds;
+    score << "Score: " << this->_score;
+    lives << "Lives: " << this->_lives;
 
     mvaddstr(1, 8, seconds.str().c_str());
     mvaddstr(1, x_max - 14, score.str().c_str());
@@ -82,10 +82,10 @@ void            Frame::printLayout(void) const {
     mvaddstr(y_max - 2, x_max - 19, "Controllers");
 
     while (++i < 3)
-        mvaddch(y_max - 1 - i, 20, '|');
+        mvaddch(y_max - 1 - i, 25, '|');
     i = -1;
     while (++i < 3)
-        mvaddch(i, 20, '|');
+        mvaddch(i, 25, '|');
     i = -1;
     while (++i < x_max)
         mvaddch(3, i, '-');
