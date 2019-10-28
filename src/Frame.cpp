@@ -1,4 +1,5 @@
 # include "../header/Frame.hpp"
+# include <random>
 
 Frame::Frame(void) : _seconds(0), _score(0), _lives(3) {
     this->_enemies = NULL;
@@ -222,7 +223,15 @@ void            Frame::printLayout(void) const {
     mvaddstr(1, 8, seconds.str().c_str());
     mvaddstr(1, x_max - 14, score.str().c_str());
     mvaddstr(y_max - 2, 8, lives.str().c_str());
+    mvaddstr(y_max - 2, x_max - 19, controllers.str().c_str());    
     mvaddstr(y_max - 2, x_max - 19, controllers.str().c_str());
+
+    mvaddstr(1, 8, seconds.str().c_str());
+    mvaddstr(1, x_max - 14, score.str().c_str());
+    mvaddstr(y_max - 2, 8, lives.str().c_str());
+    mvaddstr(y_max - 2, x_max - 19, controllers.str().c_str());    
+    mvaddstr(y_max - 2, x_max - 19, controllers.str().c_str());
+
 
     // Drawing the top bar and bottom bar
 
@@ -237,6 +246,17 @@ void            Frame::printLayout(void) const {
     i = -1;
     while (++i < x_max)
         mvaddch(y_max - 4, i, '-');
+
+    // Drawing background
+    std::mt19937 rng;
+    rng.seed(std::random_device()());    
+    std::uniform_int_distribution<std::mt19937::result_type> yrand(4, y_max - 5);
+    std::uniform_int_distribution<std::mt19937::result_type> xrand(0, x_max - 1);  
+    i = -1;
+    attron(COLOR_PAIR(2));
+    while (++i < 50)
+        mvaddch(yrand(rng), xrand(rng), '*');
+    attroff(COLOR_PAIR(2));
 }
 
 void            Frame::printObjects(void) const {
@@ -246,18 +266,18 @@ void            Frame::printObjects(void) const {
     t_list  *current;
 
     current = this->_enemies;
+    attron(COLOR_PAIR(1));
     while (current) {
-        //mvaddstr(current->data->getY(), current->data->getX(), "Enemy");    //  Ouputting the ennemies
-        if (current->data->getVisible()) {
-            attron(COLOR_PAIR(1));
+        //mvaddstr(current->data->getY(), current->data->getX(), "Enemy");    //  Ouputting the ennemies        
+        if (current->data->getVisible()) {            
             mvaddstr(current->data->getY() - 1, current->data->getX() + 2, "/");
             mvaddstr(current->data->getY(), current->data->getX(), "<");
             mvaddstr(current->data->getY(), current->data->getX() +1, "=");
-            mvaddstr(current->data->getY() + 1, current->data->getX() + 2, "\\");
-            attroff(COLOR_PAIR(1));
-        }
+            mvaddstr(current->data->getY() + 1, current->data->getX() + 2, "\\");            
+        }        
         current = current->next;
     }
+    attroff(COLOR_PAIR(1));
 
     current = this->_missiles;
     while(current) {
