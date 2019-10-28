@@ -19,11 +19,8 @@ class	Obstacle : public Position {
 
         int getW(void);
         int getH(void);
-        // std::string getType(void);
-        // void    shoot(Frame **frame);
     
     protected:
-        // std::string _type;
         int _h;
         int _w;
 };

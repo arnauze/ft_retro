@@ -57,26 +57,34 @@ void	Player::looseLife(void) {
 	return ;
 }
 
+Player::Player(int x, int y, int w, int h) : Position(x, y) {   
+    _w = w;
+    _h = h;
+    return ;
+}
+
 bool		Player::isTouched(Position * data) {
 	int		dataX = data->getX();
 	int		dataY = data->getY();
 	if (data->getType() == "Enemy") {
-		if (
-			(
-				((this->getX() == dataX) || (this->getX() + 1 == dataX) || (this->getX() + 2 == dataX))
-				||
-				((this->getX() == dataX + 1) || (this->getX() + 1 == dataX + 1) || (this->getX() + 2 == dataX + 1))
-				||
-				((this->getX() == dataX + 2) || (this->getX() + 1 == dataX + 2) || (this->getX() + 2 == dataX + 2))
-			)
-			&&
-			(
-				((this->getY() == dataY) || (this->getY() + 1 == dataY) || (this->getY() + 2 == dataY))
-				||
-				((this->getY() == dataY + 1) || (this->getY() + 1 == dataY + 1) || (this->getY() + 2 == dataY + 1))
-				||
-				((this->getY() == dataY + 2) || (this->getY() + 1 == dataY + 2) || (this->getY() + 2 == dataY + 2))
-			)
+		if ((this->getX() >= dataX - 2) && (this->getX() <= dataX + 2)
+				&& (this->getY() >= dataY - 2) 
+				&& (this->getY() <= dataY + 2)
+			// (
+			// 	((this->getX() == dataX) || (this->getX() + 1 == dataX) || (this->getX() + 2 == dataX))
+			// 	||
+			// 	((this->getX() == dataX + 1) || (this->getX() + 1 == dataX + 1) || (this->getX() + 2 == dataX + 1))
+			// 	||
+			// 	((this->getX() == dataX + 2) || (this->getX() + 1 == dataX + 2) || (this->getX() + 2 == dataX + 2))
+			// )
+			// &&
+			// (
+			// 	((this->getY() == dataY) || (this->getY() + 1 == dataY) || (this->getY() + 2 == dataY))
+			// 	||
+			// 	((this->getY() == dataY + 1) || (this->getY() + 1 == dataY + 1) || (this->getY() + 2 == dataY + 1))
+			// 	||
+			// 	((this->getY() == dataY + 2) || (this->getY() + 1 == dataY + 2) || (this->getY() + 2 == dataY + 2))
+			// )
 		)
 			return true;
 		else
@@ -88,8 +96,16 @@ bool		Player::isTouched(Position * data) {
 	}
 }
 
-// void	Player::shoot(Frame **frame) {
-// 	t_list		*missiles = (*frame)->getMissiles();
-// 	add_node(&missiles, new Missile(this->getX(), this->getY() - 1));
-// 	return ;
-// }
+bool		Player::isTouchedObstacle(Position * data) {
+	int		dataX = data->getX();
+	int		dataY = data->getY();
+	if ((this->getX() >= dataX - 2) && (this->getX() <= dataX + 2)
+				&& (this->getY() >= dataY - 2) 
+				&& (this->getY() <= dataY + 2))
+		return true;
+	else
+		return false;
+}
+
+int Player::getW() {return _w;}
+int Player::getH() {return _h;}
