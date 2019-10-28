@@ -250,10 +250,10 @@ void            Frame::printLayout(void) const {
     std::uniform_int_distribution<std::mt19937::result_type> yrand(4, y_max - 5);
     std::uniform_int_distribution<std::mt19937::result_type> xrand(0, x_max - 1);  
     i = -1;
-    attron(COLOR_PAIR(2));
+    attron(COLOR_PAIR(3));
     while (++i < 50)
         mvaddch(yrand(rng), xrand(rng), '*');
-    attroff(COLOR_PAIR(2));
+    attroff(COLOR_PAIR(3));
 }
 
 void            Frame::printObjects(void) const {
@@ -285,15 +285,15 @@ void            Frame::printObjects(void) const {
 
     current = this->_obstacles;
     while (current) {
-        // mvaddstr(current->data->getY(), current->data->getX(), "Enemy");    //  Output obstacles
+        // mvaddstr(current->data->getY(), current->data->getX(), "Obstacle");    //  Output obstacles
         if (current->data->getVisible()) {
-            attron(COLOR_PAIR(0));
+            attron(COLOR_PAIR(2));
             mvaddstr(current->data->getY() - 2, current->data->getX() + 2, "***");
             mvaddstr(current->data->getY() - 1, current->data->getX(), "******");
             mvaddstr(current->data->getY(), current->data->getX() + 1, "****");
             mvaddstr(current->data->getY() + 1, current->data->getX() + 2, "*****");
             mvaddstr(current->data->getY() + 2, current->data->getX() + 1, "****");
-            attroff(COLOR_PAIR(0));
+            attroff(COLOR_PAIR(2));
         }
         current = current->next;
     }
@@ -301,9 +301,9 @@ void            Frame::printObjects(void) const {
     current = this->_emissiles;
     while(current) {
         if (current->data->getVisible()) {
-            attron(COLOR_PAIR(3));
+            attron(COLOR_PAIR(1));
             mvaddstr(current->data->getY(), current->data->getX(), "-");        //  Outputting the missiles
-            attroff(COLOR_PAIR(3));
+            attroff(COLOR_PAIR(1));
         }
         current = current->next;
     }
