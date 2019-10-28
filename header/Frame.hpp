@@ -5,6 +5,7 @@
 # include "Player.hpp"
 # include "Enemy.hpp"
 # include "Missile.hpp"
+# include "Obstacle.hpp"
 
 class Player;
 class                   Frame {
@@ -18,16 +19,19 @@ class                   Frame {
         void                gameLoop(void);
         void                printLayout(void) const;
         void                printObjects(void) const;
+        void                getKeyHook(char c);
 
         unsigned int        getSeconds(void) const;
         unsigned int        getScore(void) const;
         t_list              *getMissiles(void) const;
         t_list              *getEnemies(void) const;
+        t_list              *getObstacles(void) const;
         void                setSeconds(unsigned int seconds);
         void                setScore(unsigned int score);
         void                setPlayer(Player *player);
         void                setEnemies(t_list *enemies);
         void                setMissiles(t_list *missiles);
+        void                setObstacles(t_list *obstacles);
         void                setMaxX(int);
         void                setMaxY(int);
         void                setMinX(int);
@@ -47,6 +51,9 @@ class                   Frame {
         void                addEmissile(Position *p);
         void                spawnEmissiles(void);
 
+        void                addObstacle(Position *p);
+        void                spawnObstacles(void);
+
     private:
         int                 _seconds;
         int                 _score;
@@ -54,13 +61,12 @@ class                   Frame {
         t_list              *_enemies;
         t_list              *_emissiles;
         t_list              *_missiles;
+        t_list              *_obstacles;
         int                 _lives;
-        // t_list              *_obstacles;
         int                 _max_y;
         int                 _min_y;
         int                 _max_x;
         int                 _min_x;
-
 };
 
 #endif
