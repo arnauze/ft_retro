@@ -5,6 +5,7 @@ Frame::Frame(void) : _seconds(0), _score(0), _lives(3) {
     this->_player = NULL;
     this->_missiles = NULL;
     this->_emissiles = NULL;
+    this->_obstacles = NULL;
     return ;
 }
 
@@ -33,6 +34,11 @@ void            Frame::setEnemies(t_list *enemies) {
 
 void            Frame::setMissiles(t_list *missiles) {
     this->_missiles = missiles;
+    return ;
+}
+
+void            Frame::setObstacles(t_list *obstacles) { /////////////////////////
+    this->_obstacles = obstacles;
     return ;
 }
 
@@ -111,6 +117,10 @@ t_list          *Frame::getEnemies(void) const {
     return this->_enemies;
 }
 
+t_list          *Frame::getObstacles(void) const { ////////////////////////////////////
+    return this->_obstacles;
+}
+
 void            Frame::init(void) {
 
     // Function called to initialize the window in ncurses
@@ -142,6 +152,9 @@ void            Frame::addEmissile(Position *p) {
     add_node(&this->_emissiles, p);
 }
 
+void            Frame::addObstacle(Position *p) {                       ///////////////////////////
+    add_node(&this->_obstacles, p);
+}
 
 void            Frame::gameLoop(void) {
 
@@ -168,27 +181,11 @@ void            Frame::gameLoop(void) {
         this->printObjects();       //  I print the objects
 
         char c = getch();           //  Wait 10ms for an input
-        
+
         if (c == ESC_KEY)           // Handle the input
             break;
-        else if (c == UP) {
-            if (this->_player->getY() > BORDER_Y)
-                this->_player->moveUp();
-        }
-        else if (c == LEFT) {
-            if (this->_player->getX() > 1)
-                this->_player->moveLeft();
-        }
-        else if (c == DOWN) {
-            if (this->_player->getY() < this->_max_y - 1)
-                this->_player->moveDown();
-        }
-        else if (c == RIGHT) {
-            if (this->_player->getX() < this->_max_x - 10)
-                this->_player->moveRight();
-        }
-        else if (c == SPACE)
-            this->addMissile(new Missile(this->_player->getX() + 6, this->_player->getY()));
+
+        this->getKeyHook(c);        
 
         clear();
         refresh();                  // Refresh the screen with the new informations
@@ -252,17 +249,36 @@ void            Frame::printObjects(void) const {
             attron(COLOR_PAIR(1));
             mvaddstr(current->data->getY() - 1, current->data->getX() + 2, "/");
             mvaddstr(current->data->getY(), current->data->getX(), "<");
-            mvaddstr(current->data->getY(), current->data->getX() +1, "=");
+            mvaddstr(current->data->getY(), current->data->getX() + 1, "=");
             mvaddstr(current->data->getY() + 1, current->data->getX() + 2, "\\");
             attroff(COLOR_PAIR(1));
         }
         current = current->next;
     }
 
+
+
+
+    current = this->_obstacles;
+    while (current) {
+        // mvaddstr(current->data->getY(), current->data->getX(), "Enemy");    //  Output obstacles
+        if (current->data->getVisible()) {
+            attron(COLOR_PAIR(2));
+            mvaddstr(current->data->getY() - 2, current->data->getX() + 2, "***");
+            mvaddstr(current->data->getY() - 1, current->data->getX(), "******");
+            mvaddstr(current->data->getY(), current->data->getX() + 1, "****");
+            mvaddstr(current->data->getY() + 1, current->data->getX() + 2, "*****");
+            mvaddstr(current->data->getY() + 2, current->data->getX() + 1, "****");
+            attroff(COLOR_PAIR(2));
+        }
+        current = current->next;
+    }
+
+
     current = this->_missiles;
     while(current) {
         if (current->data->getVisible())
-            mvaddstr(current->data->getY(), current->data->getX(), "O");        //  Outputting the missiles
+            mvaddstr(current->data->getY(), current->data->getX(), "~");        //  Outputting the missiles
         current = current->next;
     }
 
@@ -270,7 +286,7 @@ void            Frame::printObjects(void) const {
     while(current) {
         if (current->data->getVisible()) {
             attron(COLOR_PAIR(3));
-            mvaddstr(current->data->getY(), current->data->getX(), "-");        //  Outputting the missiles
+            mvaddstr(current->data->getY(), current->data->getX(), "-");        //  Outputting the enemies missiles
             attroff(COLOR_PAIR(3));
         }
         current = current->next;
@@ -287,6 +303,9 @@ void            Frame::refreshObjects(int tick) {
     if ((tick % 15) == 0) {
         this->spawnEnemies();        
     }
+    if ((tick % 25) == 0) {
+        this->spawnObstacles();        
+    }
     if ((tick % 30) == 0) {
         this->spawnEmissiles();
     }
@@ -300,6 +319,11 @@ void            Frame::refreshObjects(int tick) {
         current->data->setX(current->data->getX() + 2);
         current = current->next;
     }
+    current = this->getObstacles();
+    while (current) {
+        current->data->setX(current->data->getX() - 2);
+        current = current->next;
+    }
     current = this->getEnemies();
     while (current) {
         current->data->setX(current->data->getX() - 1);
@@ -307,6 +331,10 @@ void            Frame::refreshObjects(int tick) {
     }
 
     // Now we handle the collision
+
+
+
+
 
     current = this->getMissiles();                      // Collision between player missiles and enemies
     while (current) {
@@ -326,6 +354,28 @@ void            Frame::refreshObjects(int tick) {
         }
         current = current->next;
     }
+
+
+    current = this->getMissiles();                      // Collision between player missiles and obstacles
+    while (current) {
+        if (current->data->getVisible()) {
+            secondary = this->getObstacles();
+            while (secondary) {
+                if (secondary->data->getVisible()) {
+                    if (((current->data->getX() == secondary->data->getX()) || (current->data->getX() - 1 == secondary->data->getX()) || (current->data->getX() - 2 == secondary->data->getX())) && ((current->data->getY() == secondary->data->getY()) || (current->data->getY() == secondary->data->getY() - 1) || (current->data->getY() == secondary->data->getY() + 1)))
+                    {
+                        current->data->setVisible(false);
+                        secondary->data->setVisible(false);
+                        this->setScore(this->getScore() + 5);
+                    }
+                }
+                secondary = secondary->next;
+            }
+        }
+        current = current->next;
+    }
+
+
 
     current = this->_emissiles;
     while (current) {
@@ -365,3 +415,36 @@ void            Frame::spawnEmissiles(void) {
         current = current->next;
     }
 }
+
+void            Frame::spawnObstacles(void) {          ////////////////////////////////////////////!!!!!!!!!!!
+    srand(time(NULL));
+    int         amount = rand() % 3;
+    int         y = (rand() % (this->getMaxY() - 10)) + 5;
+    int         i = -1;
+    while (++i < amount) {
+        this->addObstacle(new Obstacle(this->getMaxX() - 6, y));
+    }
+}
+
+void            Frame::getKeyHook(char c)
+{
+    if (c == UP) {
+        if (this->_player->getY() > BORDER_Y)
+            this->_player->moveUp();
+    }
+    else if (c == LEFT) {
+        if (this->_player->getX() > 1)
+            this->_player->moveLeft();
+    }
+    else if (c == DOWN) {
+        if (this->_player->getY() < this->_max_y - 1)
+            this->_player->moveDown();
+    }
+    else if (c == RIGHT) {
+        if (this->_player->getX() < this->_max_x - 10)
+            this->_player->moveRight();
+    }
+    else if (c == SPACE)
+        this->addMissile(new Missile(this->_player->getX() + 6, this->_player->getY()));
+}
+
