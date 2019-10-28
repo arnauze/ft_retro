@@ -135,6 +135,9 @@ void            Frame::init(void) {
     init_pair(1,COLOR_RED, COLOR_BLACK); //1 for red
     init_pair(2,COLOR_BLUE, COLOR_BLACK); //2 for Blue
     init_pair(3,COLOR_YELLOW, COLOR_BLACK); //3 for Yellow
+    init_pair(4,COLOR_GREEN, COLOR_BLACK); //3 for Yellow
+    init_pair(5,COLOR_CYAN, COLOR_BLACK); //3 for Yellow
+    
     halfdelay(FPS);                 // Input will wait 'FPS' ms and send a default message (system of tick)
     clear();                        // Clear terminal
     Player  *player = new Player(1, getmaxy(stdscr) / 2);
@@ -250,10 +253,10 @@ void            Frame::printLayout(void) const {
     std::uniform_int_distribution<std::mt19937::result_type> yrand(4, y_max - 5);
     std::uniform_int_distribution<std::mt19937::result_type> xrand(0, x_max - 1);  
     i = -1;
-    attron(COLOR_PAIR(3));
+    attron(COLOR_PAIR(2));
     while (++i < 50)
         mvaddch(yrand(rng), xrand(rng), '*');
-    attroff(COLOR_PAIR(3));
+    attroff(COLOR_PAIR(2));
 }
 
 void            Frame::printObjects(void) const {
@@ -277,11 +280,13 @@ void            Frame::printObjects(void) const {
     attroff(COLOR_PAIR(1));
 
     current = this->_missiles;
+    attron(COLOR_PAIR(4));
     while(current) {
         if (current->data->getVisible())
-            mvaddstr(current->data->getY(), current->data->getX(), "~");        //  Outputting the missiles
+            mvaddstr(current->data->getY(), current->data->getX(), "o");        //  Outputting the missiles
         current = current->next;
     }
+    attroff(COLOR_PAIR(4));
 
     current = this->_obstacles;
     while (current) {
@@ -299,14 +304,14 @@ void            Frame::printObjects(void) const {
     }
 
     current = this->_emissiles;
+    attron(COLOR_PAIR(3));
     while(current) {
-        if (current->data->getVisible()) {
-            attron(COLOR_PAIR(1));
-            mvaddstr(current->data->getY(), current->data->getX(), "~");        //  Outputting the missiles
-            attroff(COLOR_PAIR(1));
+        if (current->data->getVisible()) {            
+            mvaddstr(current->data->getY(), current->data->getX(), "=");        //  Outputting the missiles            
         }
         current = current->next;
     }
+    attroff(COLOR_PAIR(3));
 
 }
 
