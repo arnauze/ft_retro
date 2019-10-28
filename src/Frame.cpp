@@ -302,7 +302,7 @@ void            Frame::printObjects(void) const {
     while(current) {
         if (current->data->getVisible()) {
             attron(COLOR_PAIR(1));
-            mvaddstr(current->data->getY(), current->data->getX(), "-");        //  Outputting the missiles
+            mvaddstr(current->data->getY(), current->data->getX(), "~");        //  Outputting the missiles
             attroff(COLOR_PAIR(1));
         }
         current = current->next;
