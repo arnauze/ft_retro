@@ -25,6 +25,7 @@ class	Player : public Position {
     public:
         Player(void);
         Player(int x, int y);
+        Player(int x, int y, int w, int h);
         ~Player(void);
         Player(Player const & player);
         Player	&operator=(Player const & player);
@@ -35,6 +36,13 @@ class	Player : public Position {
         void    setLives(int lives);
         void    looseLife(void);
         bool    isTouched(Position *data);
+        bool    isTouchedObstacle(Position * data);
+
+        int getW(void);
+        int getH(void);
+    protected:
+        int _h;
+        int _w;
 };
 
 #endif

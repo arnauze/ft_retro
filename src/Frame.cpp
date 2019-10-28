@@ -265,7 +265,7 @@ void            Frame::printObjects(void) const {
     current = this->_enemies;
     attron(COLOR_PAIR(1));
     while (current) {
-        //mvaddstr(current->data->getY(), current->data->getX(), "Enemy");    //  Ouputting the ennemies        
+        //mvaddstr(current->data->getY(), current->data->getX(), "Enemy");    //  Ouputting the enemies        
         if (current->data->getVisible()) {            
             mvaddstr(current->data->getY() - 1, current->data->getX() + 2, "/");
             mvaddstr(current->data->getY(), current->data->getX(), "<");
@@ -355,7 +355,8 @@ void            Frame::refreshObjects(int tick) {
             secondary = this->getEnemies();
             while (secondary) {
                 if (secondary->data->getVisible()) {
-                    if (((current->data->getX() == secondary->data->getX()) || (current->data->getX() - 1 == secondary->data->getX()) || (current->data->getX() - 2 == secondary->data->getX())) && ((current->data->getY() == secondary->data->getY()) || (current->data->getY() == secondary->data->getY() - 1) || (current->data->getY() == secondary->data->getY() + 1)))
+                    if ((current->data->getX() >= secondary->data->getX()) && (current->data->getY() >= secondary->data->getY() - 1) && (current->data->getY() <= secondary->data->getY() + 1))
+                    // if (((current->data->getX() == secondary->data->getX()) || (current->data->getX() - 1 == secondary->data->getX()) || (current->data->getX() - 2 == secondary->data->getX())) && ((current->data->getY() == secondary->data->getY()) || (current->data->getY() == secondary->data->getY() - 1) || (current->data->getY() == secondary->data->getY() + 1)))
                     {
                         current->data->setVisible(false);
                         secondary->data->setVisible(false);
@@ -374,7 +375,8 @@ void            Frame::refreshObjects(int tick) {
             secondary = this->getObstacles();
             while (secondary) {
                 if (secondary->data->getVisible()) {
-                    if (((current->data->getX() == secondary->data->getX()) || (current->data->getX() - 1 == secondary->data->getX()) || (current->data->getX() - 2 == secondary->data->getX())) && ((current->data->getY() == secondary->data->getY()) || (current->data->getY() == secondary->data->getY() - 1) || (current->data->getY() == secondary->data->getY() + 1)))
+                    if ((current->data->getX() <= secondary->data->getX() + 2) && (current->data->getX() >= secondary->data->getX()) && (current->data->getY() >= secondary->data->getY() - 3) && (current->data->getY() <= secondary->data->getY() + 3))
+                    // if (((current->data->getX() == secondary->data->getX()) || (current->data->getX() - 1 == secondary->data->getX()) || (current->data->getX() - 2 == secondary->data->getX())) && ((current->data->getY() == secondary->data->getY()) || (current->data->getY() == secondary->data->getY() - 1) || (current->data->getY() == secondary->data->getY() + 1)))
                     {
                         current->data->setVisible(false);
                         secondary->data->setVisible(false);
@@ -387,7 +389,7 @@ void            Frame::refreshObjects(int tick) {
         current = current->next;
     }
 
-    // Collision between player enemy missiles and player
+    // Collision between enemy missiles and player
     current = this->_emissiles;
     while (current) {
         if (current->data->getVisible()) {
@@ -404,7 +406,20 @@ void            Frame::refreshObjects(int tick) {
     current = this->_enemies;
     while (current) {
         if (current->data->getVisible()) {
-            if (this->_player->isTouched(current->data)) {
+            if (this->_player->isTouched(current->data) && current->data->getVisible()) {
+                current->data->setVisible(false);
+                this->setLives(this->getLives() - 1);
+                break ;
+            }
+        }
+        current = current->next;
+    }
+
+    // Collision between player obstacles and player
+    current = this->_obstacles;
+    while (current) {
+        if (current->data->getVisible()) {
+            if (this->_player->isTouchedObstacle(current->data) && current->data->getVisible()) {
                 current->data->setVisible(false);
                 this->setLives(this->getLives() - 1);
                 break ;

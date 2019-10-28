@@ -2,7 +2,6 @@
 
 Obstacle::Obstacle(void) : Position()
 {
-
     return ;
 }
 
@@ -11,10 +10,8 @@ Obstacle::Obstacle(int x, int y) : Position(x, y) {
 }
 
 Obstacle::Obstacle(int x, int y, int w, int h) : Position(x, y) {   
-
     _w = w;
     _h = h;
-    // _type = type;
     return ;
 }
 
@@ -31,7 +28,6 @@ Obstacle&  Obstacle::operator = (Obstacle &rhs)
     y_center = rhs.getY();
     _w = rhs.getW();
     _h = rhs.getH();
-    // _type = rhs.getType();
     return (*this);
 }
 
